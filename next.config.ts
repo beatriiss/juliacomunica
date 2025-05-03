@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  basePath: '/juliacomunica', // substitua pelo nome do seu repositório
+  images: {
+    unoptimized: true, // necessário para exportação
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
