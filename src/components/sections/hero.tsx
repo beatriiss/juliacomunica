@@ -11,7 +11,7 @@ export function Hero() {
             <div className="text-center lg:text-left md:max-w-2xl md:mx-auto lg:mx-0">
               <h1 className="text-4xl font-bold tracking-tight text-text sm:text-5xl md:text-6xl">
                 <span className="block">Olá, eu sou</span>
-                <span className="block text-primary-600 mt-2">Seu Nome</span>
+                <span className="block text-primary-600 mt-2">Júlia Carvalho</span>
               </h1>
               <p className="mt-6 text-lg text-secondary-500">
                 Jornalista apaixonado por contar histórias e transformar

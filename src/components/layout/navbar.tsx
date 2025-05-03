@@ -1,9 +1,7 @@
-// src/components/layout/navbar.tsx
 "use client";
 
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 const navItems = [
@@ -17,13 +15,32 @@ const navItems = [
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   useEffect(() => {
     const handleScroll = () => {
+      // Adiciona classe quando scroll > 10px
       if (window.scrollY > 10) {
         setScrolled(true);
       } else {
         setScrolled(false);
+      }
+      
+      // Detecta seção ativa
+      const sections = ["home", "about", "portfolio", "experience", "contact"];
+      const scrollPosition = window.scrollY + 100;
+      
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+          
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
       }
     };
 
@@ -35,28 +52,36 @@ export function Navbar() {
     <nav
       className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/90 backdrop-blur-md shadow-sm"
-          : "bg-transparent"
+          ? "bg-white/95 backdrop-blur-md shadow-md py-2"
+          : "bg-transparent py-4"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center">
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="#home" className="text-2xl font-bold text-primary-600">
-              Seu Nome
+        <div className="flex justify-between items-center">
+          <div className="flex-shrink-0">
+            <Link href="#home" className="text-2xl font-bold text-primary-600 flex items-center">
+              <span className="mr-2 text-3xl">📰</span>
+              <span className="font-extrabold tracking-tight">Júlia Comunica</span>
             </Link>
           </div>
 
           {/* Desktop navigation */}
           <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-4">
+            <div className="flex space-x-8">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="px-3 py-2 rounded-md text-sm font-medium text-secondary-700 hover:text-primary-600 transition-colors"
+                  className={`text-sm font-medium transition-colors relative ${
+                    activeSection === item.href.substring(1)
+                      ? "text-primary-600"
+                      : "text-secondary-700 hover:text-primary-600"
+                  }`}
                 >
                   {item.name}
+                  {activeSection === item.href.substring(1) && (
+                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary-600 rounded-full"></span>
+                  )}
                 </Link>
               ))}
             </div>
@@ -64,10 +89,9 @@ export function Navbar() {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="icon"
+            <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="p-2 rounded-md text-secondary-700 hover:text-primary-600 hover:bg-secondary-50 transition-colors"
               aria-label="Menu"
             >
               {isMenuOpen ? (
@@ -75,7 +99,7 @@ export function Navbar() {
               ) : (
                 <Menu className="h-6 w-6" />
               )}
-            </Button>
+            </button>
           </div>
         </div>
       </div>
@@ -83,12 +107,16 @@ export function Navbar() {
       {/* Mobile menu */}
       {isMenuOpen && (
         <div className="md:hidden bg-white/95 backdrop-blur-md shadow-lg">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+          <div className="px-4 pt-2 pb-3 space-y-2">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="block px-3 py-2 rounded-md text-base font-medium text-secondary-700 hover:text-primary-600 hover:bg-gray-50"
+                className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                  activeSection === item.href.substring(1)
+                    ? "text-primary-600 bg-primary-50"
+                    : "text-secondary-700 hover:text-primary-600 hover:bg-secondary-50"
+                }`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {item.name}
