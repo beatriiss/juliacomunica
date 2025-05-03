@@ -1,10 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
-  basePath: '/docs', // substitua pelo nome do seu repositório
-  images: {
-    unoptimized: true, // necessário para exportação
-  },
+  reactStrictMode: true,
+  // Remova output: 'export' e basePath: '/docs' para um deploy normal no Vercel
+  // Se você realmente precisar dessas configurações, comente-as e adicione novamente conforme necessário
 };
 
 module.exports = nextConfig;
